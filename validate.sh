@@ -27,3 +27,6 @@ exit_code=$?
 if [ $exit_code -ne 0 ]; then
     exit 1
 fi
+
+echo "[INF] Data of $td passed all checks"
+exit 0

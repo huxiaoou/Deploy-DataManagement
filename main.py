@@ -1,4 +1,3 @@
-import sys
 import argparse
 
 
@@ -11,6 +10,8 @@ def parse_args():
 
 
 if __name__ == "__main__":
+    import sys
+    import datetime as dt
     from solutions.validators import fetch_data
 
     args = parse_args()
@@ -27,10 +28,10 @@ if __name__ == "__main__":
                    "volume", "open_interest", "turnover"],
         )
         if validate_price_volume(data, qty=67):
-            print(f"[OK] Successfully validate price and volume data @ {args.date}")
+            print(f"[OK][{dt.datetime.now()}] Successfully validate price and volume data @ {args.date}")
             sys.exit(0)
         else:
-            print(f"[ERR] Failed to validate price and volume data @ {args.date}")
+            print(f"[ERR][{dt.datetime.now()}] Failed to validate price and volume data @ {args.date}")
             sys.exit(1)
     elif args.switch == "fund":
         from solutions.validators import validate_fund
@@ -42,10 +43,10 @@ if __name__ == "__main__":
             names=["datetime", "date", "code", "basis", "basis_rate", "stock"],
         )
         if validate_fund(data, qty=67):
-            print(f"[OK] Successfully validate fundamental data @ {args.date}")
+            print(f"[OK][{dt.datetime.now()}] Successfully validate fundamental data @ {args.date}")
             sys.exit(0)
         else:
-            print(f"[ERR] Failed to validate fundamental data @ {args.date}")
+            print(f"[ERR][{dt.datetime.now()}] Failed to validate fundamental data @ {args.date}")
             sys.exit(1)
 
     elif args.switch == "macro":
@@ -60,10 +61,10 @@ if __name__ == "__main__":
                    "m0000612", "m0001227", "m0001385", "m0017126"],
         )
         if validate_macro(data, qty=1):
-            print(f"[OK] Successfully validate macro data @ {args.date}")
+            print(f"[OK][{dt.datetime.now()}] Successfully validate macro data @ {args.date}")
             sys.exit(0)
         else:
-            print("[ERR] Failed to validate macro data")
+            print(f"[ERR][{dt.datetime.now()}] Failed to validate macro data @ {args.date}")
             sys.exit(1)
     else:
         print(f"[ERR] Invalid switch {args.switch}")
