@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/bash -l
 
 if [ "$#" -eq 1 ]; then
     if [ "$1" = "--auto" ]; then
