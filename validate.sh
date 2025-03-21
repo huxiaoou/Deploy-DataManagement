@@ -10,6 +10,12 @@ else
     read -p "Please input the check date, format = [YYYYMMDD]:" td
 fi
 
+python main.py --date $td --switch pos
+exit_code=$?
+if [ $exit_code -ne 0 ]; then
+    exit 1
+fi
+
 python main.py --date $td --switch vp
 exit_code=$?
 if [ $exit_code -ne 0 ]; then

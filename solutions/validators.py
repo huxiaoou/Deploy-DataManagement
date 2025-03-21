@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from typing import Union
 
@@ -34,3 +35,17 @@ def validate_fund(df: pd.DataFrame, qty: int) -> bool:
 
 def validate_macro(df: pd.DataFrame, qty: int) -> bool:
     return len(df) == qty
+
+
+def read_pos(trade_date: str, lib: str, name_tmpl: str) -> pd.DataFrame:
+    src_file = name_tmpl.format(trade_date)
+    src_path = os.path.join(lib, trade_date[0:4], trade_date, src_file)
+    try:
+        df = pd.read_csv(src_path)
+    except FileNotFoundError:
+        df = pd.DataFrame()
+    return df
+
+
+def validate_pos(df: pd.DataFrame, qty: int) -> bool:
+    return len(df) >= qty
