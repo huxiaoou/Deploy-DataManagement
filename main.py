@@ -4,8 +4,13 @@ import argparse
 def parse_args():
     arg_parser = argparse.ArgumentParser(description="aaa")
     arg_parser.add_argument("-d", "--date", type=str, required=True, help="date to check, format='YYYYMMDD'")
-    arg_parser.add_argument("--switch", type=str, required=True, choices=("vp", "fund", "macro", "pos"),
+    arg_parser.add_argument("--switch", type=str, required=True, choices=("vp", "fund", "macro", "pos", "tab"),
                             help="which type of data to validate")
+    arg_parser.add_argument("--tab0", type=str,
+                            help="The first table to read, only used when argument 'switch' is 'tab', format like 'meta_data.future_bar_1day_aft'")
+    arg_parser.add_argument("--tab1", type=str,
+                            help="The second table to read, only used when argument 'switch' is 'tab', format like 'meta_data.future_bar_1day_aft'")
+    arg_parser.add_argument("--vars", type=str, help="vars to check, only used when argument 'switch' is 'tab'.")
     return arg_parser.parse_args()
 
 
@@ -51,7 +56,6 @@ if __name__ == "__main__":
         else:
             print(f"[ERR] [{dt.datetime.now()}] {SFR('Failed')} to validate {SFY('fundamental')} data @ {args.date}")
             sys.exit(1)
-
     elif args.switch == "macro":
         from solutions.validators import validate_macro
 
@@ -83,6 +87,24 @@ if __name__ == "__main__":
         else:
             print(f"[ERR] [{dt.datetime.now()}] {SFR('Failed')} to validate {SFY('position')} data @ {args.date}")
             sys.exit(1)
+    elif args.switch == "tab":
+        from solutions.validators import check_var
+
+        lib, table = args.tab0.split(".")
+        data0 = fetch_data(trade_date=args.date, lib=lib, table=table, names="datetime,code," + args.vars)
+        data0 = data0.set_index(["datetime", "code"]).sort_index()
+        lib, table = args.tab1.split(".")
+        data1 = fetch_data(trade_date=args.date, lib=lib, table=table, names="datetime,code," + args.vars)
+        data1 = data1.set_index(["datetime", "code"]).sort_index()
+        check_vars = args.vars.split(",")
+        for cvar in check_vars:
+            check_var(
+                s0=data0[cvar],
+                s1=data1[cvar],
+                src0=args.tab0,
+                src1=args.tab1,
+                var_name=cvar,
+            )
     else:
         print(f"[ERR] Invalid switch {args.switch}")
         sys.exit(1)
