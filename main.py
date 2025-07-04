@@ -13,6 +13,7 @@ def parse_args():
     arg_parser.add_argument("--vars", type=str, help="vars to check, only required when argument 'switch' is 'tab'.")
     arg_parser.add_argument("--dropna", default=False, action="store_true",
                             help="for a specific var, if both sources are nan, then skip it. only required when argument 'switch' is 'tab'.")
+    arg_parser.add_argument("--precision", default=1e-8, type=float, help="Only differences bigger than the precision will be reported.")
     return arg_parser.parse_args()
 
 
@@ -107,6 +108,7 @@ if __name__ == "__main__":
                 src1=args.tab1,
                 var_name=cvar,
                 dropna=args.dropna,
+                precision=args.precision,
             )
     else:
         print(f"[ERR] Invalid switch {args.switch}")
