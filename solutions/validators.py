@@ -42,7 +42,9 @@ def validate_pos(df: pd.DataFrame, qty: int) -> bool:
     return len(df) >= qty
 
 
-def check_var(s0: pd.Series, s1: pd.Series, src0: str, src1: str, var_name: str, dropna: bool):
+def check_var(
+        s0: pd.Series, s1: pd.Series, src0: str, src1: str, var_name: str, dropna: bool, precision: float,
+) -> bool:
     set0, set1 = set(s0.index), set(s1.index)
     if d01 := set0.difference(set1):
         print(f"[ERR] elements in {src0} but not in {src1}: {d01}")
@@ -54,7 +56,7 @@ def check_var(s0: pd.Series, s1: pd.Series, src0: str, src1: str, var_name: str,
     if dropna:
         df = df.dropna(axis=0, how="all")
     diff = df[id0] - df[id1]
-    diff_data = df.loc[diff != 0]
+    diff_data = df.loc[~(diff.abs() <= precision)]
     if diff_data.empty:
         print(f"[INF] No errors are found between {SFG(id0)} and {SFG(id1)}")
     else:
