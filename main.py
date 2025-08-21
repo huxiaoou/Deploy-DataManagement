@@ -36,7 +36,7 @@ if __name__ == "__main__":
                    "`open`", "high", "low", "`close`",
                    "volume", "open_interest", "turnover"],
         )
-        data = data.query("code.str.contains('9999_(DCE|GFEX|SHFE|CZCE|INE)')")
+        data = data.query("code.str.match('.*9999_(DCE|GFEX|SHFE|CZCE|INE)')")
         print(data)
         if validate_price_volume(data, qty=67):
             print(
