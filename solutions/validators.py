@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from typing import Union
-from qtools_sxzq.utility.view_tqdb import fetch
+from qtools_sxzq.qdataviewer import fetch
 from qtools_sxzq.qwidgets import SFG, SFY
 
 
