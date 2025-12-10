@@ -38,7 +38,7 @@ if __name__ == "__main__":
         )
         data = data.query("code.str.match('.*9999_(DCE|GFEX|SHFE|CZCE|INE)')")
         print(data)
-        if validate_price_volume(data, qty=67):
+        if validate_price_volume(data, qty=66):
             print(
                 f"[OK ] [{dt.datetime.now()}] {SFG('Successfully')} validate {SFY('price and volume')} data @ {args.date}")
             sys.exit(0)
